@@ -1,6 +1,6 @@
 # 解读Ant Design Form中的onChange
 
-主要讲[Ant Design Form](https://ant.design/components/form-cn/)组件使用中碰到的onChange问题，顺便源码解析。
+主要讲[Ant Design Form](https://ant.design/components/form-cn/)组件使用中碰到的问题（onChange），顺便源码解析。
 
 接下来说的Form代表ant-form([react-component/form](https://github.com/react-component/form))
 
@@ -8,7 +8,7 @@
 首先了解什么是Form
 > React High Order Form Component(web & react-native) 
 
-1、是一个Form[高阶组件HOC](https://reactjs.org/docs/higher-order-components.html)，官方文档已经说了很详细了，我这里简单说下，`HOC`是设计模式中`装饰模式`的一个实践，在不改变原有的用途上进行组件增强。
+1、是一个Form高阶组件，[HOC](https://reactjs.org/docs/higher-order-components.html)官方文档已经说了很详细了，简单说下，`HOC`是设计模式中`装饰模式`的一个实践，在不改变原有的用途上进行组件增强。
 
 2、让被包装的组件具备表单功能，其中的表单组件具备数据双向绑定，以及一些校验等一系列功能。
 
@@ -28,7 +28,7 @@ class Demo1 extends Component {
 }
 export default Form.create()(Demo1);
 ```
-通过`Form.create`初始化这个组件；这里的`HOC`对`props`进行了拦截，注入了自己的对象`form`；`getFieldProps`基本等价于`getFieldDecorator`只是写法不同，这个方法主要返回`onChange(onXXX) value`这两个重要的双向绑定的属性，最终返回值作用于`Input`上面
+通过`Form.create`初始化这个组件；`HOC`对被包装的`props`进行了拦截，注入了自己的对象`form`；`getFieldProps`基本等价于`getFieldDecorator`只是写法不同，这个方法主要返回`onChange(onXXX) value`这两个重要的双向绑定的属性，最终返回值作用于`Input`上面
 
 再通过`form.validateFields/validateFieldsAndScroll`就能完成简单的数据提交了。
 
@@ -169,7 +169,7 @@ onCollectCommon(name, action, args) {
 ```
 `onChange`之类的方法是在`fieldMeta[action](...args);`或者`fieldMeta.originalProps[action](...args);`这两行代码执行的，在这进行`setFieldsValue`（代码片段三中执行的方法）会进行一次刷新，但是后续执行`setFields`会覆盖掉之前的数据，`setFields`并不会受中间的`setFieldsValue`影响，还是设置原来本需要设置的值。所以就很好解释了`为什么在onChange中去setFieldsValue是没有效果的呢？`。
 
-## 六、Form难道就没有提供这样的API吗
+## 六、Form没有提供这样的API吗
 
 仔细查阅文档后发现有一个属性，`options.normalize`
 
@@ -265,10 +265,13 @@ validateFieldsInternal(fields, {
 },
 ```
 1、上面精简了代码，提取两个关键的点，两次的`setFields`，第一次是正常的数据更新(dirty: true)，第二次是检验后会产生了一些新的数据（是否检验成功等信息）再次去更新渲染(dirty: false)。
+
 2、因为`setFields`中会执行`normalize`，这也是会执行两次的原因。
+
 3、个人理解第一次执行去做`normalize`就可以，第二次就没必要去回调了。（有不同看法可以探讨）
 
 ## 八、总结
 
 1、不要在onChange中去设置Form中的值，要在`normalize`这个属性中去做。
+
 2、使用中碰到比较费解问题，所以需要看源码来理解。
