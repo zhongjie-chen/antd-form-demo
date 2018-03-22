@@ -14,7 +14,7 @@
 
 
 ## 二、创建Form的大致原理（如何绑定）
-下面是最基本Form代码片段，里面有一个id/key为`name`的输入框。
+下面是最基本Form代码片段，里面有一个id/key为`name`的输入框。
 ```javascript
 class Demo1 extends Component {
   render() {
@@ -42,7 +42,7 @@ export default Form.create()(Demo1);
 
 ## 三、Form中的onChange（如何存储，如何更新）
 
-***我看到上图中的的`onChange`方法，是一个名叫`onCollect`被`bind`后的方法，我们搜索源码中的`onCollect`***
+***我看到上图中的的`onChange`方法，是一个名叫`onCollect`被`bind`后的方法，我们搜索源码中的`onCollect`***
 
 ```javascript
 // 代码片段一
@@ -79,7 +79,7 @@ setFields(maybeNestedFields) {
 2、通过`fieldsStore`把新的`Fields`设置到这个对象里，再通过`this.forceUpdate()`手动去做`render`。*这句可以忽视（解析`Element`->`Dom Element`->`virtual Dom` diff `old virtual Dom` 生成新的页面）。*
 
 
-## 四、被包装组件中的onChange
+## 四、被包装组件中的onChange
 > 有一个需求，一个渠道的多选控件，有选项【点我达】【点我吧】【饿了么】还有一个【全部】，全部跟其它选择具有互斥效果。比如选了【点我达】，【全部】这个选择要删除掉；比如选了【全部】，其他的选项要清空掉。
 
 如下图所示
@@ -148,9 +148,9 @@ class Demo2 extends Component {
 
 ## 五、为什么在onChange中去setFieldsValue是没有效果的呢？
 
-我们带着这个疑问来看源码，开始讲的`onCollect`是收集表单组件的变化，所以手动写的`onChange`方法，是不会直接作用于原始的方法上；`onChange`方法实际会在`onCollect`中去执行；接下来看下源码具体怎么执行的，
+我们带着这个疑问来看源码，开始讲的`onCollect`是收集表单组件的变化，所以手动写的`onChange`方法，是不会直接作用于原始的方法上；`onChange`方法实际会在`onCollect`中去执行；接下来看下源码具体怎么执行的，
 
-`代码片段一`可以看出`onCollect`方法中调用了`onCollectCommon`，根据意思是通用的收集变化的处理方法，看该方法源码
+`代码片段一`可以看出`onCollect`方法中调用了`onCollectCommon`，根据意思是通用的收集变化的处理方法，看该方法源码
 ```javascript
 // action实际上是trigger 默认是onChange
 onCollectCommon(name, action, args) {
