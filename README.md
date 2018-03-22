@@ -32,9 +32,9 @@ export default Form.create()(Demo1);
 
 再通过`form.validateFields/validateFieldsAndScroll`就能完成简单的数据提交了。
 
-下面是通过react-dev-tools在Chrome中查看Input的属性结果
+下面是通过react-dev-tools在Chrome中查看Input的属性结果
 
-![input-props](./imgs/1.png)
+![input-props](https://raw.githubusercontent.com/zhongjie-chen/antd-form-demo/master/imgs/1.png)
 
 其它属性是`ant Input`的属性。
 
@@ -42,7 +42,7 @@ export default Form.create()(Demo1);
 
 ## 三、Form中的onChange（如何存储，如何更新）
 
-***我看到上图中的的`onChange`方法，是一个名叫`onCollect`被`bind`后的方法，我们搜索源码中的`onCollect`***
+***我看到上图中的的`onChange`方法，是一个名叫`onCollect`被`bind`后的方法，我们搜索源码中的`onCollect`***
 
 ```javascript
 // 代码片段一
@@ -84,7 +84,7 @@ setFields(maybeNestedFields) {
 
 如下图所示
 
-![selector](./imgs/select.gif)
+![selector](https://raw.githubusercontent.com/zhongjie-chen/antd-form-demo/master/imgs/select.gif)
 
 下面是最开始实现的代码
 
